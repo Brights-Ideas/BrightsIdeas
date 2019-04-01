@@ -26,6 +26,7 @@ namespace BrightsIdeas.Api
                 BaseAddress = endPointA
             };
             services.AddSingleton<HttpClient>(httpClient); // note the singleton
+            services.AddMemoryCache();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Linq;
-using System.Xml.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using BrightsIdeas.Web.Models;
 using Newtonsoft.Json;
@@ -21,12 +16,13 @@ namespace BrightsIdeas.Web.Controllers
             var client = new HttpClient();
             //client.SetBearerToken(GetAccessToken());
 
-            var response = await client.GetAsync("http://localhost:52642/api/values");
+            var response = await client.GetAsync("http://localhost:52642/api/properties");
             if (response.IsSuccessStatusCode)
             {
-                var properties = await response.Content.ReadAsAsync<IEnumerable<Properties>>();
+                var properties = JsonConvert.DeserializeObject<IList<Properties>>(response.Content.ReadAsStringAsync().Result);
+                //var properties = await response.Content.ReadAsAsync<IList<Properties>>();
 
-                return View(properties.Where(r =>r.department == "Sales"));
+                return View(properties.Where(r => r.Department == "Sales").ToList());
             }
 
             return View();
@@ -35,7 +31,7 @@ namespace BrightsIdeas.Web.Controllers
         public async Task<IActionResult> Details(string propertyId)
         {
             var client = new HttpClient();
-            var response = await client.GetAsync($"http://localhost:52642/api/values/{propertyId}");
+            var response = await client.GetAsync($"http://localhost:52642/api/properties/{propertyId}");
             if (response.IsSuccessStatusCode)
             {
                 var properties = await response.Content.ReadAsAsync<Properties>();

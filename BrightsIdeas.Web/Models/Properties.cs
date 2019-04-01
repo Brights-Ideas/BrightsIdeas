@@ -16,7 +16,6 @@ namespace BrightsIdeas.Web.Models
         public string BranchID { get; set; }
         public string clientName { get; set; }
         public string branchName { get; set; }
-        public string department { get; set; }
         public string DisplayAddress { get; set; }
         public string MainSummary { get; set; }
         public List<string> Images { get; set; }
