@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
 
 namespace BrightsIdeas.Api
 {
@@ -16,10 +18,12 @@ namespace BrightsIdeas.Api
         }
 
         public IConfiguration Configuration { get; }
+       
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            AppCenter.Start("{87bdfeab-1a92-42a3-9038-c824de112504}", typeof(Analytics));
             Uri endPointA = new Uri("http://services.jupix.co.uk/api/"); // this is the endpoint HttpClient will hit
             HttpClient httpClient = new HttpClient()
             {
