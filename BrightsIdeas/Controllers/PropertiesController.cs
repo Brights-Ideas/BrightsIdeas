@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -8,6 +9,7 @@ using BrightsIdeas.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
+using Swashbuckle.AspNetCore.Examples;
 
 namespace BrightsIdeas.Api.Controllers
 {
@@ -28,6 +30,7 @@ namespace BrightsIdeas.Api.Controllers
 
         // GET api/properties
         [HttpGet]
+        [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(IList<Properties>))]
         public async Task<IActionResult> Get()
         {
             var properties = await GetProperties();
@@ -40,6 +43,7 @@ namespace BrightsIdeas.Api.Controllers
 
         // GET api/properties/5
         [HttpGet("{id}")]
+        [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(Properties))]
         public ActionResult Get(string id)
         {
             var data = GetFilteredProperties(id);
@@ -65,7 +69,7 @@ namespace BrightsIdeas.Api.Controllers
         {
         }
 
-        public async Task<IList<Properties>> GetProperties()
+        private async Task<IList<Properties>> GetProperties()
         {
             if (!_cache.TryGetValue("ListOfProperties", out IList<Properties> properties))
             {
@@ -104,7 +108,7 @@ namespace BrightsIdeas.Api.Controllers
             return properties;
         }
 
-        public Properties GetFilteredProperties(string propertyId)
+        private Properties GetFilteredProperties(string propertyId)
         {
             if (!_cache.TryGetValue($"ListOfProperties{propertyId}", out Properties property))
             {

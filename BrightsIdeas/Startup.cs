@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace BrightsIdeas.Api
 {
@@ -32,6 +33,24 @@ namespace BrightsIdeas.Api
             services.AddSingleton<HttpClient>(httpClient); // note the singleton
             services.AddMemoryCache();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new Info { Title = "Properties Api", Version = "v1" });
+                //options.OperationFilter<ExamplesOperationFilter>();
+                //options.AddSecurityDefinition("oauth2", new OAuth2Scheme
+                //{
+                //    Type = "oauth2",
+                //    Flow = "password",
+                //    AuthorizationUrl = $"{identitySettings.IdentityServerUrl}/connect/authorize",
+                //    TokenUrl = $"{identitySettings.IdentityServerUrl}/connect/token",
+                //    Scopes = new Dictionary<string, string>
+                //    {
+                //        { "cashflowsIdentityApi ", "cashflows Identity Api Scope " },
+                //        { "openid ", "openid Scope " }
+                //    }
+                //});
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,7 +58,15 @@ namespace BrightsIdeas.Api
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
+
+                app.UseSwagger();
+
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Properties Api");
+                    c.RoutePrefix = "documentation";
+                });
             }
             else
             {
@@ -47,7 +74,7 @@ namespace BrightsIdeas.Api
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseMvc();
         }
     }
