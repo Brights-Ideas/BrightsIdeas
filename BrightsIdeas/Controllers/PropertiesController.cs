@@ -11,9 +11,10 @@ using Newtonsoft.Json;
 
 namespace BrightsIdeas.Api.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
-    public class PropertiesController : ControllerBase
+    public class PropertiesController : Controller
     {
         private readonly IMemoryCache _cache;
 
@@ -64,9 +65,9 @@ namespace BrightsIdeas.Api.Controllers
         {
         }
 
-        public async Task<string> GetProperties()
+        public async Task<IList<Properties>> GetProperties()
         {
-            if (!_cache.TryGetValue("ListOfProperties", out string properties))
+            if (!_cache.TryGetValue("ListOfProperties", out IList<Properties> properties))
             {
                 //Console.WriteLine("Cache miss....loading from database into cache");
                 var endpoint = "get_properties.php";
@@ -79,17 +80,23 @@ namespace BrightsIdeas.Api.Controllers
                                       select new Properties
                                       {
                                           PropertyId = x.Element("propertyID")?.Value,
+                                          BranchID = x.Element("branchID")?.Value,
+                                          ClientName = x.Element("clientName")?.Value,
+                                          BranchName = x.Element("branchName")?.Value,
                                           Price = x.Element("price")?.Value,
                                           Department = x.Element("department")?.Value,
+                                          ReferenceNumber = x.Element("referenceNumber")?.Value,
                                           DisplayAddress = x.Element("displayAddress")?.Value,
                                           MainSummary = x.Element("mainSummary")?.Value,
+                                          FullDescription = x.Element("fullDescription")?.Value,
                                           Images = x.Element("images")?.Descendants("image")
                                               .Select(i =>
                                                   i.Value
                                               ).ToList()
                                       };
 
-                properties = JsonConvert.SerializeObject(xElementResults);
+                var json = JsonConvert.SerializeObject(xElementResults);
+                properties = JsonConvert.DeserializeObject<IList<Properties>>(json);
 
                 _cache.Set("ListOfProperties", properties, TimeSpan.FromHours(12));
             }
@@ -101,7 +108,7 @@ namespace BrightsIdeas.Api.Controllers
         {
             if (!_cache.TryGetValue($"ListOfProperties{propertyId}", out Properties property))
             {
-                var properties = JsonConvert.DeserializeObject<IList<Properties>>(GetProperties().Result);
+                var properties = GetProperties().Result;
 
                 property = properties.FirstOrDefault(p => p.PropertyId == propertyId);
 

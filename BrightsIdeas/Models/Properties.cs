@@ -15,19 +15,12 @@ namespace BrightsIdeas.Api.Models
     public class Properties
     {
         public string PropertyId { get; set; }
-        public string branchID { get; set; }
-        public string clientName { get; set; }
-        public string branchName { get; set; }
+        public string BranchID { get; set; }
+        public string ClientName { get; set; }
+        public string BranchName { get; set; }
         public string Department { get; set; }
-        public string referenceNumber { get; set; }
-        public string addressName { get; set; }
-        public string addressNumber { get; set; }
-        public string addressStreet { get; set; }
-        public string address2 { get; set; }
-        public string address3 { get; set; }
-        public string address4 { get; set; }
-        public string addressPostcode { get; set; }
-        public string country { get; set; }
+        public string ReferenceNumber { get; set; }
+        
         public string DisplayAddress { get; set; }
         public string propertyBedrooms { get; set; }
         public string propertyBathrooms { get; set; }
@@ -37,9 +30,7 @@ namespace BrightsIdeas.Api.Models
         public string displayPropertyType { get; set; }
         public string propertyType { get; set; }
         public string propertyStyle { get; set; }
-        public string propertyAge { get; set; }
-        public string floorArea { get; set; }
-        public string floorAreaUnits { get; set; }
+        
         public string propertyFeature1 { get; set; }
         public string propertyFeature2 { get; set; }
         public string propertyFeature3 { get; set; }
@@ -51,23 +42,16 @@ namespace BrightsIdeas.Api.Models
         public string propertyFeature9 { get; set; }
         public string propertyFeature10 { get; set; }
         public string Price { get; set; }
-        public string forSalePOA { get; set; }
-        public string priceQualifier { get; set; }
         public string propertyTenure { get; set; }
         public string saleBy { get; set; }
-        public string developmentOpportunity { get; set; }
-        public string investmentOpportunity { get; set; }
-        public string estimatedRentalIncome { get; set; }
-        public string availability { get; set; }
+        public string Availability { get; set; }
         public string MainSummary { get; set; }
-        public string fullDescription { get; set; }
+        public string FullDescription { get; set; }
         public string dateLastModified { get; set; }
         public string timeLastModified { get; set; }
-        public string featuredProperty { get; set; }
         public string regionID { get; set; }
         public string latitude { get; set; }
         public string longitude { get; set; }
-        public object flags { get; set; }
         public List<string> Images { get; set; }
         public object floorplans { get; set; }
         public Epc epc { get; set; }

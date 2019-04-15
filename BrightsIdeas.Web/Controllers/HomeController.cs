@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using BrightsIdeas.Web.Models;
-using Newtonsoft.Json;
 
 namespace BrightsIdeas.Web.Controllers
 {
@@ -19,8 +18,7 @@ namespace BrightsIdeas.Web.Controllers
             var response = await client.GetAsync("http://localhost:52642/api/properties");
             if (response.IsSuccessStatusCode)
             {
-                var properties = JsonConvert.DeserializeObject<IList<Properties>>(response.Content.ReadAsStringAsync().Result);
-                //var properties = await response.Content.ReadAsAsync<IList<Properties>>();
+                var properties = await response.Content.ReadAsAsync<IList<Properties>>();
 
                 return View(properties.Where(r => r.Department == "Sales").ToList());
             }
